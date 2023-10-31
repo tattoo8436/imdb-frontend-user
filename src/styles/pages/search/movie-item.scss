@@ -1,0 +1,36 @@
+.movie-item {
+    display: flex;
+    cursor: pointer;
+
+    &__image {
+        width: 90px;
+        height: 120px;
+        margin-right: 1rem;
+    }
+
+    &__detail {
+        &__name {
+            color: $primary;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        &__duration {
+            margin-bottom: 0.5rem;
+        }
+
+        &__score {
+            margin-bottom: 0.5rem;
+
+            .anticon {
+                color: $yellow;
+                font-size: 20px;
+            }
+        }
+
+        &__description {
+            margin-bottom: 0.5rem;
+        }
+    }
+}

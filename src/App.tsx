@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ConfigProvider } from "antd";
+import { createContext, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import Layout from "./router/Layout";
+
+export const ContextLocation = createContext({});
 
 function App() {
+  const [preLocation, setPreLocation] = useState("/");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ContextLocation.Provider value={{ preLocation, setPreLocation }}>
+      <ConfigProvider
+        theme={{
+          token: {
+            fontFamily: "Segoe UI",
+          },
+        }}
+      >
+        <ToastContainer />
+        <Layout />
+      </ConfigProvider>
+    </ContextLocation.Provider>
   );
 }
 

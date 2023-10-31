@@ -1,0 +1,36 @@
+$primary: #032541;
+$light-primary: #91a2b1;
+$secondary: #b443d6;
+$yellow: #e8cf31;
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 1rem;
+}
+
+.form {
+    &__item {
+        height: 100px;
+        position: relative;
+
+        .error-msg {
+            color: red;
+            margin: 4px 0;
+            font-size: .8rem;
+        }
+
+        &__label {
+            margin-bottom: 10px;
+        }
+
+        &__input {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+.movie-detail {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+
+        &__left {
+            &__name {
+                font-size: 2rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        &__right {
+            display: flex;
+
+            .rating-imdb {
+                margin-right: 1rem;
+
+                &__value {
+                    display: flex;
+                    align-items: center;
+
+                    &__icon {
+                        color: $yellow;
+                        font-size: 1.5rem;
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    &__content {
+        &__asset {
+            display: flex;
+
+            &__image {
+                height: 300px;
+            }
+        }
+    }
+}
