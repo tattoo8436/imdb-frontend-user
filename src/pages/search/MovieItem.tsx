@@ -4,6 +4,7 @@ import { Image } from "antd";
 import dayjs from "dayjs";
 import { BASE_URL_API } from "../../utils";
 import { StarFilled } from "@ant-design/icons";
+import numeral from "numeral";
 
 interface IProps {
   movie: IMovie;
@@ -39,7 +40,7 @@ const MovieItem = (props: IProps) => {
 
         <div className="movie-item__detail__score">
           <StarFilled />
-          {movie.score}
+          {movie.score?.toFixed(1)}
         </div>
 
         <div className="movie-item__detail__description">
@@ -47,7 +48,7 @@ const MovieItem = (props: IProps) => {
         </div>
 
         <div className="movie-item__detail__number-vote">
-          Số lượt đánh giá: {movie.numberVote}
+          Số lượt đánh giá: {numeral(movie.numberVote).format("0,")}
         </div>
       </div>
     </div>

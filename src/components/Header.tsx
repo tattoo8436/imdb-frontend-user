@@ -4,7 +4,7 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import React, { useContext } from "react";
-import { Button, Dropdown, MenuProps } from "antd";
+import { Button, Divider, Dropdown, MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCurrentAccount } from "../utils";
 import { ContextLocation } from "../App";
@@ -30,18 +30,20 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div className="header__left">
-        <VideoCameraOutlined
-          className="header__left__item logo"
-          onClick={() => navigate("/")}
-        />
-
-        <div className="header__left__item">Phim lẻ</div>
-
-        <div className="header__left__item">Phim bộ</div>
+      <div className="header__left" onClick={() => navigate("/")}>
+        <VideoCameraOutlined className="logo" /> <span>The Movie Database</span>
       </div>
 
       <div className="header__right">
+        <div
+          className="header__right__search"
+          onClick={() => navigate("/search")}
+        >
+          Tìm kiếm phim
+        </div>
+
+        <div className="divider"></div>
+
         {isLogin ? (
           <Dropdown menu={{ items }}>
             <div className="header__right__btn">
@@ -62,6 +64,9 @@ const Header = () => {
             >
               Đăng nhập
             </div>
+
+            <div className="divider"></div>
+
             <div
               className="header__right__btn"
               onClick={() => navigate("/register")}

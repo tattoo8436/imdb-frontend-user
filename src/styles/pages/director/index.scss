@@ -1,0 +1,71 @@
+.director {
+    &__content {
+        margin-top: 80px;
+        padding: 0 5rem;
+        min-height: 80vh;
+
+        &__name {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        &__dob {
+            margin-bottom: 1rem;
+        }
+
+        &__detail {
+            display: flex;
+            margin-bottom: 1rem;
+
+            &__image {
+                height: 280px !important;
+                width: 210px !important;
+            }
+
+            &__description {
+                margin-left: 2rem;
+            }
+        }
+
+        &__movie {
+            margin-bottom: 1rem;
+
+            &__title {
+                font-size: 1.3rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .item-movie {
+                display: flex;
+                border: 1px solid $divider;
+                border-radius: 8px;
+                overflow: hidden;
+
+                &__image {
+                    width: 90px;
+                    height: 120px;
+                }
+
+                &__detail {
+                    padding: .5rem 1rem;
+
+                    &>div {
+                        margin-bottom: 0.5rem;
+                    }
+
+                    &__score {
+                        svg {
+                            color: $yellow;
+                        }
+
+                        span {
+                            margin-right: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

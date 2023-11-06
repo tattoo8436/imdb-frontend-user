@@ -1,4 +1,4 @@
-.header{
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,34 +11,43 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     z-index: 2;
 
-    &__left{
+    &__left {
         display: flex;
         align-items: center;
         margin-left: 1rem;
+        cursor: pointer;
 
-        &__item{
-            padding: 1rem;
-            cursor: pointer;
-        }
-
-        .logo{
+        .logo {
             font-size: 1.5rem;
+            margin-right: 1rem;
         }
     }
 
-    &__right{
+    &__right {
         display: flex;
+        align-items: center;
         margin-right: 1rem;
-        
-        &__btn{
+
+        &__search {
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .divider {
+            width: 1px;
+            height: 1rem;
+            background-color: #fff;
+        }
+
+        &__btn {
             padding: 1rem;
             cursor: pointer;
 
-            &>*{
+            &>* {
                 padding: 2px;
             }
 
-            &__icon{
+            &__icon {
                 font-size: .8rem;
             }
         }

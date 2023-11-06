@@ -22,7 +22,6 @@ export interface ISearchMovie {
   name: string;
   type: number | null;
   genreId: number | null;
-  actorId: number | null;
   score: number | null;
   releaseDate: number | string | null;
   language: string | null;
@@ -45,9 +44,25 @@ export interface IMovie {
   score: number;
   language: string;
   listMovieGenres: any[];
-  listMovieActor: any[];
+  listMovieActors: any[];
   listMovieDirectors: any[];
   listComments: any[];
   listRatings: any[];
   listEpisodes: any[];
+}
+
+export interface IActor {
+  id: number | null;
+  name: string;
+  description: string;
+  image: string;
+  dob: string;
+}
+
+export interface IDirector {
+  id: number | null;
+  name: string;
+  description: string;
+  image: string;
+  dob: string;
 }

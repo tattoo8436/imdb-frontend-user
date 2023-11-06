@@ -22,7 +22,6 @@ const Search = () => {
     pageSize: 10,
     name: "",
     genreId: null,
-    actorId: null,
     type: null,
     score: null,
     releaseDate: null,
