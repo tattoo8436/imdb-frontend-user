@@ -16,10 +16,10 @@ const MovieItem = (props: IProps) => {
 
   return (
     <div
-      className="movie-item card"
+      className="movie-item card-hover"
       onClick={() => navigate(`/movie?movieId=${movie.id}`)}
     >
-      <Image
+      <img
         className="movie-item__image"
         src={`${BASE_URL_API}/image/${movie.image}`}
         alt="Ảnh"
@@ -40,7 +40,7 @@ const MovieItem = (props: IProps) => {
 
         <div className="movie-item__detail__score">
           <StarFilled />
-          {movie.score?.toFixed(1)}
+          {movie.numberVote > 0 ? movie.score?.toFixed(1) : ""}/10
         </div>
 
         <div className="movie-item__detail__description">

@@ -46,6 +46,7 @@ const Search = () => {
     try {
       const { data } = await movieApi.searchMovie({
         ...search,
+        score: search.score ? Number(search.score) : null,
         releaseDate: search.releaseDate ? `${search.releaseDate}-01-01` : null,
       });
       console.log({ data });
@@ -80,7 +81,9 @@ const Search = () => {
         <div className="search__content__title">Tìm kiếm phim</div>
 
         <div className="search__content__search-bar">
-          <Button onClick={() => console.log("")}>Log</Button>
+          <Button className="d-none" onClick={() => console.log("")}>
+            Log
+          </Button>
           <Row>
             <Col span={12} className="search-bar__name" offset={12}>
               <Input
@@ -245,9 +248,10 @@ const Search = () => {
               current={search.pageIndex}
               total={totalRecords}
               pageSize={search.pageSize}
-              onChange={(e) =>
-                setSearch((pre: any) => ({ ...pre, pageIndex: e }))
-              }
+              onChange={(e) => {
+                setSearch((pre: any) => ({ ...pre, pageIndex: e }));
+                setIsRefetch((pre) => !pre);
+              }}
             />
           </div>
         </div>

@@ -1,14 +1,29 @@
 import React, { useState } from "react";
 import { IMovie } from "../../utils/type";
 import dayjs from "dayjs";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
-import { Avatar, Button, Col, Image, Input, Row } from "antd";
+import {
+  ArrowRightOutlined,
+  RightOutlined,
+  StarFilled,
+  StarOutlined,
+} from "@ant-design/icons";
+import {
+  Avatar,
+  Button,
+  Col,
+  Collapse,
+  CollapseProps,
+  Image,
+  Input,
+  Row,
+} from "antd";
 import { BASE_URL_API } from "../../utils";
 import YouTube from "react-youtube";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { movieApi } from "../../apis/movieApi";
 import numeral from "numeral";
+import ListEpisodes from "./ListEpisodes";
 
 interface IProps {
   movie: IMovie | null;
@@ -27,10 +42,22 @@ interface IProps {
     undefined
   >;
   setIsRefetch: React.Dispatch<React.SetStateAction<boolean>>;
+  currentAccount: any;
+  listMoviesSimilar: IMovie[];
 }
 
 const MovieDetail = (props: IProps) => {
-  const { movie, userScore, setOpenModal, hookForm, setIsRefetch } = props;
+  const {
+    movie,
+    userScore,
+    setOpenModal,
+    hookForm,
+    setIsRefetch,
+    currentAccount,
+    listMoviesSimilar,
+  } = props;
+  const isLogin = localStorage.getItem("account") !== null;
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -57,6 +84,14 @@ const MovieDetail = (props: IProps) => {
     }
   };
 
+  const items: CollapseProps["items"] = [
+    {
+      key: "1",
+      label: "Các tập phim",
+      children: <ListEpisodes movie={movie} />,
+    },
+  ];
+
   return (
     <div className="movie-detail">
       <div className="movie-detail__header">
@@ -64,8 +99,9 @@ const MovieDetail = (props: IProps) => {
           <div className="movie-detail__header__left__name">{movie?.name}</div>
 
           <div className="movie-detail__header__left__year">
-            {movie?.releaseDate ? dayjs(movie.releaseDate).format("YYYY") : ""}{" "}
-            | {movie?.duration} phút
+            {movie?.type === 2 ? "Phim bộ | " : ""}
+            {movie?.releaseDate ? dayjs(movie.releaseDate).format("YYYY") : ""}
+            {movie?.endYear} | {movie?.duration} phút
           </div>
         </div>
 
@@ -77,7 +113,7 @@ const MovieDetail = (props: IProps) => {
 
               <div className="rating-imdb__value__content">
                 <div className="rating-imdb__value__content__score">
-                  {movie?.score?.toFixed(1)}/10
+                  {movie?.score ?? 0 > 0 ? movie?.score?.toFixed(1) : ""}/10
                 </div>
                 <div className="rating-imdb__value__content__number-vote">
                   {numeral(movie?.numberVote).format("0,")}
@@ -101,6 +137,7 @@ const MovieDetail = (props: IProps) => {
                 className="rating-user__input"
                 onClick={() => setOpenModal(true)}
                 icon={<StarOutlined />}
+                disabled={!isLogin}
               >
                 Đánh giá
               </Button>
@@ -111,7 +148,7 @@ const MovieDetail = (props: IProps) => {
 
       <div className="movie-detail__content">
         <div className="movie-detail__content__asset">
-          <Image
+          <img
             className="movie-detail__content__asset__image"
             src={`${BASE_URL_API}/image/${movie?.image}`}
             alt="Ảnh"
@@ -121,7 +158,8 @@ const MovieDetail = (props: IProps) => {
             className="movie-detail__content__asset__trailer"
             videoId={movie?.trailer ? movie?.trailer?.split("?v=")?.at(1) : ""}
             opts={{
-              height: "300",
+              height: "400",
+              width: "800",
             }}
           />
         </div>
@@ -159,16 +197,28 @@ const MovieDetail = (props: IProps) => {
         <div className="divider"></div>
       </div>
 
+      {Number(movie?.listEpisodes?.length) > 0 && (
+        <Collapse
+          items={items}
+          defaultActiveKey={[]}
+          className="movie-detail__episode"
+        />
+      )}
+
       <div className="movie-detail__footer">
         <Row gutter={[24, 12]}>
           <Col xs={24} md={12}>
             <div className="movie-detail__footer__actor">
               <div className="movie-detail__footer__actor__title">
-                Diễn viên
+                <div className="movie-detail__footer__actor__title__icon"></div>
+
+                <div className="movie-detail__footer__actor__title__text">
+                  Diễn viên
+                </div>
               </div>
 
               <div className="movie-detail__footer__actor__content">
-                <Row>
+                <Row gutter={[24, 24]}>
                   {movie?.listMovieActors?.map((i) => (
                     <Col key={i.id} span={12} className="item-actor">
                       <Avatar
@@ -200,42 +250,48 @@ const MovieDetail = (props: IProps) => {
                 Bình luận
               </div>
 
-              <div className="movie-detail__footer__comment__input">
-                <form
-                  onSubmit={hookForm.handleSubmit(onSubmit)}
-                  className="form"
-                >
-                  <div className="form__input">
-                    <Controller
-                      name="comment"
-                      control={hookForm.control}
-                      rules={{
-                        validate: {
-                          required: (v) =>
-                            v !== "" || "Vui lòng nhập bình luận",
-                        },
-                      }}
-                      render={({ field }) => (
-                        <Input {...field} placeholder="Nhập bình luận" />
-                      )}
-                    />
-                    {hookForm.formState.errors.comment && (
-                      <p className="error-msg">
-                        {hookForm.formState.errors.comment.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <Button
-                    className="movie-detail__footer__comment__input__btn"
-                    type="primary"
-                    htmlType="submit"
-                    loading={loading}
+              {isLogin ? (
+                <div className="movie-detail__footer__comment__input">
+                  <form
+                    onSubmit={hookForm.handleSubmit(onSubmit)}
+                    className="form"
                   >
-                    Bình luận
-                  </Button>
-                </form>
-              </div>
+                    <div className="form__input">
+                      <Controller
+                        name="comment"
+                        control={hookForm.control}
+                        rules={{
+                          validate: {
+                            required: (v) =>
+                              v !== "" || "Vui lòng nhập bình luận",
+                          },
+                        }}
+                        render={({ field }) => (
+                          <Input {...field} placeholder="Nhập bình luận" />
+                        )}
+                      />
+                      {hookForm.formState.errors.comment && (
+                        <p className="error-msg">
+                          {hookForm.formState.errors.comment.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <Button
+                      className="movie-detail__footer__comment__input__btn"
+                      type="primary"
+                      htmlType="submit"
+                      loading={loading}
+                    >
+                      Bình luận
+                    </Button>
+                  </form>
+                </div>
+              ) : (
+                <div className="movie-detail__footer__comment__note">
+                  Vui lòng <Link to="/login">đăng nhập</Link> để bình luận
+                </div>
+              )}
 
               <div className="movie-detail__footer__comment__content">
                 {movie?.listComments?.map((i) => (
@@ -257,6 +313,54 @@ const MovieDetail = (props: IProps) => {
             </div>
           </Col>
         </Row>
+
+        <div className="movie-detail__footer__similar">
+          <div className="movie-detail__footer__similar__title">
+            <div className="movie-detail__footer__similar__title__icon"></div>
+
+            <div className="movie-detail__footer__similar__title__text">
+              Phim tương tự
+            </div>
+          </div>
+
+          <div className="movie-detail__footer__similar__content">
+            {listMoviesSimilar?.map((i) => (
+              <div
+                key={i.id}
+                className="movie-item"
+                onClick={() => navigate(`/movie?movieId=${i.id}`)}
+              >
+                <div className="movie-item__image">
+                  <img
+                    src={`${BASE_URL_API}/image/${i.image}`}
+                    alt="Ảnh"
+                    className="movie-item__image__image"
+                  />
+
+                  <div className="mask">
+                    <StarFilled className="mask__icon" />
+
+                    <div className="mask__score">
+                      {i.numberVote > 0 ? i.score.toFixed(1) : ""}/10
+                    </div>
+
+                    <div className="mask__genre">
+                      {i.listMovieGenres?.map((j) => (
+                        <div key={j.id}>{j.genre.name}</div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="movie-item__name">{i.name}</div>
+
+                <div className="movie-item__year">
+                  {i.releaseDate ? dayjs(i.releaseDate).format("YYYY") : ""}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

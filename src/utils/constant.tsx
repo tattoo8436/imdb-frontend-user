@@ -113,7 +113,7 @@ export const optionLanguageEdit = [
     label: "Khác",
     value: "OTHER",
   },
-]
+];
 
 export const optionType = [
   {
@@ -128,15 +128,15 @@ export const optionType = [
 
 export const optionSort = [
   {
-    label: "Năm",
-    value: 'releaseDate',
+    label: "Ngày phát hành",
+    value: "releaseDate",
   },
   {
     label: "Điểm đánh giá",
-    value: 'score',
+    value: "score",
   },
   {
     label: "Số lượt đánh giá",
-    value: 'numberVote',
+    value: "numberVote",
   },
 ];

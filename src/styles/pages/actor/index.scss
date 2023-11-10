@@ -19,8 +19,8 @@
             margin-bottom: 1rem;
 
             &__image {
-                height: 280px !important;
-                width: 210px !important;
+                height: 300px;
+                width: 200px;
             }
 
             &__description {
@@ -42,14 +42,24 @@
                 border: 1px solid $divider;
                 border-radius: 8px;
                 overflow: hidden;
+                transition: .3s;
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                }
 
                 &__image {
-                    width: 90px;
+                    width: 80px;
                     height: 120px;
                 }
 
                 &__detail {
                     padding: .5rem 1rem;
+
+                    &__name {
+                        font-weight: 600;
+                    }
 
                     &>div {
                         margin-bottom: 0.5rem;

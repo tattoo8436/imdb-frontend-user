@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useSearchParams } from "react-router-dom";
-import { IMovie } from "../../utils/type";
+import { IEpisode, IMovie } from "../../utils/type";
 import { movieApi } from "../../apis/movieApi";
-import MovieDetail from "./MovieDetail";
+import EpisodeDetail from "./EpisodeDetail";
 import ModalRating from "./ModalRating";
 import { useForm } from "react-hook-form";
 import { getCurrentAccount } from "../../utils";
+import { Button } from "antd";
 
-const Movie = () => {
+const Episode = () => {
   const [searchParams] = useSearchParams();
+  const episodeId = searchParams.get("episodeId");
   const movieId = searchParams.get("movieId");
   const currentAccount = getCurrentAccount();
   const hookFormRating = useForm({
@@ -20,7 +22,7 @@ const Movie = () => {
         username: currentAccount?.username,
         password: currentAccount?.password,
       },
-      movieId: Number(movieId),
+      episodeId: Number(episodeId),
       score: 0,
     },
   });
@@ -31,42 +33,44 @@ const Movie = () => {
         username: currentAccount?.username,
         password: currentAccount?.password,
       },
-      movieId: Number(movieId),
+      episodeId: Number(episodeId),
       comment: "",
     },
   });
 
-  const [movie, setMovie] = useState<IMovie | null>(null);
-  const [listMoviesSimilar, setListMoviesSimilar] = useState<IMovie[]>([]);
-  const [comment, setComment] = useState("");
+  const [episode, setEpisode] = useState<IEpisode | null>(null);
   const [openModalRating, setOpenModalRating] = useState(false);
   const [isRefetch, setIsRefetch] = useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchMovie();
-    fetchRatingMovie();
-    fetchSimilar();
-  }, [isRefetch, movieId]);
+    fetchEpisode();
+    fetchRatingEpisode();
+  }, [isRefetch]);
 
-  const fetchMovie = async () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const fetchEpisode = async () => {
+    console.log(episodeId);
+
     try {
-      const { data } = await movieApi.getMovieById(movieId);
+      const { data } = await movieApi.getEpisodeById(episodeId);
       console.log(data);
-      setMovie(data);
+      setEpisode(data);
     } catch (error: any) {
       console.log(error);
     }
   };
 
-  const fetchRatingMovie = async () => {
+  const fetchRatingEpisode = async () => {
     try {
-      const { data } = await movieApi.getRatingMovieByAccount({
+      const { data } = await movieApi.getRatingEpisodeByAccount({
         accountAdmin: {
           username: currentAccount.username,
           password: currentAccount.password,
         },
-        movieId: Number(movieId),
+        episodeId: Number(episodeId),
       });
       console.log(data);
       hookFormRating.setValue("score", data.score ?? null);
@@ -75,29 +79,23 @@ const Movie = () => {
     }
   };
 
-  const fetchSimilar = async () => {
-    try {
-      const { data } = await movieApi.getListMoviesSimilar(movieId);
-      console.log(data);
-      setListMoviesSimilar(data);
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
-
   return (
-    <div className="movie">
+    <div className="episode">
       <Header />
 
-      <div className="movie__content">
-        <MovieDetail
-          movie={movie}
+      <div className="episode__content">
+        <Button
+          className="d-none"
+          onClick={() => console.log(hookFormRating.getValues())}
+        >
+          Log
+        </Button>
+        <EpisodeDetail
+          episode={episode}
           userScore={hookFormRating.watch("score")}
           setOpenModal={setOpenModalRating}
           hookForm={hookFormComment}
           setIsRefetch={setIsRefetch}
-          currentAccount={currentAccount}
-          listMoviesSimilar={listMoviesSimilar}
         />
       </div>
 
@@ -108,9 +106,10 @@ const Movie = () => {
         setOpenModal={setOpenModalRating}
         hookForm={hookFormRating}
         setIsRefetch={setIsRefetch}
+        movieId={movieId ?? ""}
       />
     </div>
   );
 };
 
-export default Movie;
+export default Episode;

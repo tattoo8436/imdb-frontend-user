@@ -57,7 +57,7 @@ const Director = () => {
         </div>
 
         <div className="director__content__detail">
-          <Image
+          <img
             className="director__content__detail__image"
             src={`${BASE_URL_API}/image/${director?.image}`}
             alt="Ảnh"
@@ -77,9 +77,10 @@ const Director = () => {
             {listMovies?.map((i: any) => (
               <Col key={i.id} xs={12} md={8}>
                 <div className="item-movie">
-                  <Image
+                  <img
                     className="item-movie__image"
                     src={`${BASE_URL_API}/image/${i.image}`}
+                    alt="Ảnh"
                   />
 
                   <div className="item-movie__detail">

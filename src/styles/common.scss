@@ -6,7 +6,8 @@ $yellow: #e8cf31;
 $divider: #ddd;
 
 * {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    //font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Ysabeau Infant', sans-serif;
 }
 
 .card {
@@ -14,6 +15,22 @@ $divider: #ddd;
     border-radius: 8px;
     background-color: #fff;
     padding: 1rem;
+}
+
+.card-hover {
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 1rem;
+    transition: .3s;
+    border: 1px solid $divider;
+
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+}
+
+.d-none {
+    display: none;
 }
 
 .form {

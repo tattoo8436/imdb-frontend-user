@@ -39,7 +39,8 @@ export interface IMovie {
   duration: string;
   type: number | null;
   ended: boolean;
-  numberSeason: string;
+  endYear: number;
+  numberSeason: number;
   numberVote: number;
   score: number;
   language: string;
@@ -48,7 +49,23 @@ export interface IMovie {
   listMovieDirectors: any[];
   listComments: any[];
   listRatings: any[];
-  listEpisodes: any[];
+  listEpisodes: IEpisode[];
+}
+
+export interface IEpisode {
+  id: number | null;
+  ep: number;
+  season: number;
+  name: string;
+  description: string;
+  image: Array<any>;
+  releaseDate: any;
+  duration: string;
+  numberVote: number;
+  score: number;
+  listMovieActorIds?: number[];
+  listMovieActorEpisodes?: any[];
+  listComments?: any[];
 }
 
 export interface IActor {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { IActor } from "../../utils/type";
 import { movieApi } from "../../apis/movieApi";
 import Header from "../../components/Header";
@@ -12,6 +12,7 @@ import { StarFilled } from "@ant-design/icons";
 const Actor = () => {
   const [searchParams] = useSearchParams();
   const actorId = searchParams.get("actorId");
+  const navigate = useNavigate();
 
   const [actor, setActor] = useState<IActor | null>(null);
   const [listMovies, setListMovies] = useState([]);
@@ -56,7 +57,7 @@ const Actor = () => {
         </div>
 
         <div className="actor__content__detail">
-          <Image
+          <img
             className="actor__content__detail__image"
             src={`${BASE_URL_API}/image/${actor?.image}`}
             alt="Ảnh"
@@ -75,10 +76,14 @@ const Actor = () => {
           <Row gutter={[24, 24]}>
             {listMovies?.map((i: any) => (
               <Col key={i.id} xs={12} md={8}>
-                <div className="item-movie">
-                  <Image
+                <div
+                  className="item-movie"
+                  onClick={() => navigate(`/movie?movieId=${i.id}`)}
+                >
+                  <img
                     className="item-movie__image"
                     src={`${BASE_URL_API}/image/${i.image}`}
+                    alt="Ảnh"
                   />
 
                   <div className="item-movie__detail">
@@ -86,7 +91,7 @@ const Actor = () => {
 
                     <div className="item-movie__detail__score">
                       <StarFilled />
-                      {Number(i.score).toFixed(1)}
+                      {i.numberVote > 0 ? Number(i.score).toFixed(1) : ""}/10
                     </div>
 
                     <div className="item-movie__detail__actor">

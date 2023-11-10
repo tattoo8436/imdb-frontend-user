@@ -7,6 +7,7 @@ import Search from "../pages/search";
 import Movie from "../pages/movie";
 import Actor from "../pages/actor";
 import Director from "../pages/director";
+import Episode from "../pages/episode";
 
 const Layout = () => {
   return (
@@ -17,6 +18,7 @@ const Layout = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/search" element={<Search />} />
         <Route path="/movie" element={<Movie />} />
+        <Route path="/episode" element={<Episode />} />
         <Route path="/actor" element={<Actor />} />
         <Route path="/director" element={<Director />} />
         <Route path="*" element={<NotFound />} />
