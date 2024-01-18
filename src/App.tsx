@@ -2,6 +2,9 @@ import { ConfigProvider } from "antd";
 import { createContext, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Layout from "./router/Layout";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { RecoilRoot } from "recoil";
 
 export const ContextLocation = createContext({});
 
@@ -17,8 +20,12 @@ function App() {
           },
         }}
       >
-        <ToastContainer />
-        <Layout />
+        <Provider store={store}>
+          <RecoilRoot>
+            <ToastContainer />
+            <Layout />
+          </RecoilRoot>
+        </Provider>
       </ConfigProvider>
     </ContextLocation.Provider>
   );
